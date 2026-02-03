@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-space-grotesk;
+  }
+
+  body {
+    @apply font-poppins;
+  }
+}
+
+@layer components {
+  .gradient-text {
+    @apply bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent;
+  }
+
+  .glass-effect {
+    @apply backdrop-blur-xl bg-white/20 border border-white/30;
+  }
+
+  .gradient-hover {
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-2xl;
+  }
+}
+
+/* Custom font family assignments */
+@font-face {
+  font-family: 'Poppins';
+  font-weight: 400;
+  src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
+}
