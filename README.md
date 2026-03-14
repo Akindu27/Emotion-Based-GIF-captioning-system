@@ -7,15 +7,15 @@
 [![React + TypeScript](https://img.shields.io/badge/React-TypeScript-61DAFB.svg)](https://react.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-_An intelligent system that analyzes GIFs to detect emotions, objects, actions, and generates contextually-aware natural language captions._
+An intelligent system that analyzes GIFs to detect emotions, objects, actions, and generates contextually-aware natural language captions.
 
-[🚀 Live Demo](https://sentivue.vercel.app) • [📝 Documentation](#features) • [🔧 Installation](#installation) • [💻 Development](#development)
+[Live Demo](https://sentivue.vercel.app) | [Documentation](#features) | [Installation](#installation) | [Development](#development)
 
 </div>
 
 ---
 
-## 📋 Overview
+## Overview
 
 SentiVue is a multimodal AI system that combines:
 
@@ -27,45 +27,45 @@ SentiVue is a multimodal AI system that combines:
 
 Upload a GIF, and SentiVue generates rich, emotionally-aware captions like:
 
-> _"a joyful person dancing with a dog in bright lighting"_
+> "a joyful person dancing with a dog in bright lighting"
 
 ---
 
-## ✨ Features
+## Features
 
 ### Core Capabilities
 
-| Feature                    | Technology     | Details                                                                                                     |
-| -------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------- |
-| **Emotion Detection**      | ResNet50       | 6 emotion groups: positive_energetic, positive_calm, negative_intense, negative_subdued, surprise, contempt |
-| **Object Detection**       | YOLO v8 Nano   | Multi-frame voting ensures accurate detection across animation frames                                       |
-| **Action Recognition**     | VideoMAE       | Detects activities (dancing, jumping, etc.) with motion-based fallback                                      |
-| **Person Counting**        | YOLO           | Counts people in the GIF with confidence thresholds                                                         |
-| **Lighting Analysis**      | OpenCV         | Classifies brightness as dim, moderate, or bright                                                           |
-| **Content Classification** | Heuristics     | Detects real-world vs animated/cartoon content                                                              |
-| **Caption Generation**     | Template-based | Context-aware English descriptions with emotion-specific vocabulary                                         |
+| Feature                | Technology     | Details                                                                                                     |
+| ---------------------- | -------------- | ----------------------------------------------------------------------------------------------------------- |
+| Emotion Detection      | ResNet50       | 6 emotion groups: positive_energetic, positive_calm, negative_intense, negative_subdued, surprise, contempt |
+| Object Detection       | YOLO v8 Nano   | Multi-frame voting ensures accurate detection across animation frames                                       |
+| Action Recognition     | VideoMAE       | Detects activities (dancing, jumping, etc.) with motion-based fallback                                      |
+| Person Counting        | YOLO           | Counts people in the GIF with confidence thresholds                                                         |
+| Lighting Analysis      | OpenCV         | Classifies brightness as dim, moderate, or bright                                                           |
+| Content Classification | Heuristics     | Detects real-world vs animated/cartoon content                                                              |
+| Caption Generation     | Template-based | Context-aware English descriptions with emotion-specific vocabulary                                         |
 
 ### API Features
 
-- ✅ RESTful endpoints with FastAPI
-- ✅ Automatic API documentation (Swagger UI)
-- ✅ CORS enabled for cross-domain requests
-- ✅ Error handling and validation
-- ✅ Health check endpoints
-- ✅ Detailed metadata in responses
+- RESTful endpoints with FastAPI
+- Automatic API documentation (Swagger UI)
+- CORS enabled for cross-domain requests
+- Error handling and validation
+- Health check endpoints
+- Detailed metadata in responses
 
 ### Frontend Features
 
-- 🎨 Modern, responsive UI (React + Tailwind CSS)
-- 🖼️ File upload and URL-based GIF input
-- ⚡ Real-time processing feedback
-- 📊 Detailed result visualization
-- 🎭 Emotion and metadata display
-- 🌓 Dark theme with gradient design
+- Modern, responsive UI (React + Tailwind CSS)
+- File upload and URL-based GIF input
+- Real-time processing feedback
+- Detailed result visualization
+- Emotion and metadata display
+- Dark theme with gradient design
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -116,7 +116,7 @@ Upload a GIF, and SentiVue generates rich, emotionally-aware captions like:
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -191,7 +191,7 @@ VITE_API_URL=https://Akindu27-sentivue-backend.hf.space
 
 ---
 
-## 🔌 API Usage
+## API Usage
 
 ### Generate Caption
 
@@ -250,35 +250,35 @@ Returns API information and available features.
 
 ---
 
-## 🎯 Model Details
+## Model Details
 
 ### Emotion Classifier
 
-- **Architecture:** ResNet50 (feature extractor) + 2-layer classifier
-- **Number of Classes:** 6 emotion groups
-- **Input Size:** 224×224 RGB
-- **Output:** Emotion label + confidence score
-- **Training Data:** GIFGIF dataset (grouped emotions)
+- Architecture: ResNet50 (feature extractor) + 2-layer classifier
+- Number of Classes: 6 emotion groups
+- Input Size: 224x224 RGB
+- Output: Emotion label + confidence score
+- Training Data: GIFGIF dataset (grouped emotions)
 
 ### Object Detector
 
-- **Architecture:** YOLO v8 Nano
-- **Detection Strategy:** Multi-frame voting across 8 sampled frames
-- **Confidence Threshold:** 0.20
-- **Post-processing:** Removes generic "person" labels, keeps specific objects
-- **Top Results:** 2 most frequently detected objects
+- Architecture: YOLO v8 Nano
+- Detection Strategy: Multi-frame voting across 8 sampled frames
+- Confidence Threshold: 0.20
+- Post-processing: Removes generic "person" labels, keeps specific objects
+- Top Results: 2 most frequently detected objects
 
 ### Action Recognizer
 
-- **Architecture:** VideoMAE (vision transformer for video)
-- **Input:** 16 evenly sampled frames
-- **Confidence Threshold:** 0.15
-- **Fallback:** Motion-based heuristics if confidence is low
-- **Outputs:** Actions like "dancing", "jumping", "moving", "gesturing"
+- Architecture: VideoMAE (vision transformer for video)
+- Input: 16 evenly sampled frames
+- Confidence Threshold: 0.15
+- Fallback: Motion-based heuristics if confidence is low
+- Outputs: Actions like dancing, jumping, moving, gesturing
 
 ---
 
-## 💻 Development
+## Development
 
 ### Project Structure
 
@@ -326,48 +326,46 @@ npm run type-check
 
 ### Code Quality
 
-- **Linting:** ESLint configured for React + TypeScript
-- **Formatting:** Prettier (run via VS Code or `npm run format`)
-- **Type Safety:** Full TypeScript coverage on frontend
-- **Error Handling:** Try-catch blocks with logging in backend
+- Linting: ESLint configured for React + TypeScript
+- Formatting: Prettier (run via VS Code or `npm run format`)
+- Type Safety: Full TypeScript coverage on frontend
+- Error Handling: Try-catch blocks with logging in backend
 
 ---
 
-## 📦 Deployment
+## Deployment
 
 ### Backend Deployment (HuggingFace Spaces)
 
-1. Create a new Space: https://huggingface.co/new-space
-2. Select **Docker** SDK
+1. Create a new Space at https://huggingface.co/new-space
+2. Select Docker SDK
 3. Connect GitHub repository
-4. Add required secrets:
-   - `HF_TOKEN` (optional, if using private models)
+4. Add required secrets (HF_TOKEN optional for private models)
 5. Space automatically rebuilds and deploys on push
 
-**Deployed at:** `https://Akindu27-sentivue-backend.hf.space`
+Deployed at: https://Akindu27-sentivue-backend.hf.space
 
 ### Frontend Deployment (Vercel)
 
 1. Push to GitHub repository
-2. Connect to Vercel: https://vercel.com/import
-3. Configure environment variable:
-   - `VITE_API_URL=https://Akindu27-sentivue-backend.hf.space`
-4. Vercel auto-deploys on `main` branch push
+2. Connect to Vercel at https://vercel.com/import
+3. Configure environment variable: `VITE_API_URL=https://Akindu27-sentivue-backend.hf.space`
+4. Vercel auto-deploys on main branch push
 
-**Deployed at:** https://sentivue.vercel.app
+Deployed at: https://sentivue.vercel.app
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### General Issues
 
-| Issue                   | Solution                                               |
-| ----------------------- | ------------------------------------------------------ |
-| Models fail to download | Set `HF_TOKEN` environment variable                    |
-| CORS errors             | Verify backend and frontend URLs match in `.env` files |
-| Out of memory           | Use CPU mode (default) or reduce GIF size              |
-| Slow processing         | Ensure backend is running on appropriate device        |
+| Issue                   | Solution                                             |
+| ----------------------- | ---------------------------------------------------- |
+| Models fail to download | Set HF_TOKEN environment variable                    |
+| CORS errors             | Verify backend and frontend URLs match in .env files |
+| Out of memory           | Use CPU mode (default) or reduce GIF size            |
+| Slow processing         | Ensure backend is running on appropriate device      |
 
 ### Backend Issues
 
@@ -396,25 +394,25 @@ npm run preview
 
 ---
 
-## 📊 Performance
+## Performance
 
-- **GIF Processing:** ~2-5 seconds (depends on GIF size and complexity)
-- **Model Inference:** Optimized for CPU; GPU recommended for production
-- **Memory Usage:** ~2GB RAM for all models
-- **Concurrent Requests:** Limited by available resources
+- GIF Processing: 2-5 seconds (depends on GIF size and complexity)
+- Model Inference: Optimized for CPU; GPU recommended for production
+- Memory Usage: ~2GB RAM for all models
+- Concurrent Requests: Limited by available resources
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Areas for improvement:
 
-- [ ] Add more emotion categories
-- [ ] Improve action recognition accuracy
-- [ ] Optimize model inference speed
-- [ ] Add batch processing capability
-- [ ] Expand caption template diversity
-- [ ] Multi-language support
+- Add more emotion categories
+- Improve action recognition accuracy
+- Optimize model inference speed
+- Add batch processing capability
+- Expand caption template diversity
+- Multi-language support
 
 ### Development Workflow
 
@@ -436,19 +434,19 @@ git push origin feature/your-feature
 
 ---
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see [LICENSE](../../LICENSE) file for details.
 
 ---
 
-## 👨‍💻 Author
+## Author
 
-**Akindu27** - [GitHub](https://github.com/Akindu27) • [HuggingFace Hub](https://huggingface.co/Akindu27)
+Akindu27 - [GitHub](https://github.com/Akindu27) | [HuggingFace Hub](https://huggingface.co/Akindu27)
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - GIFGIF dataset for emotion labels
 - YOLO community for object detection models
@@ -458,7 +456,7 @@ This project is licensed under the MIT License - see [LICENSE](../../LICENSE) fi
 
 ---
 
-## 📚 References
+## References
 
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
 - [PyTorch Documentation](https://pytorch.org/docs/)
@@ -470,8 +468,6 @@ This project is licensed under the MIT License - see [LICENSE](../../LICENSE) fi
 
 <div align="center">
 
-**[⬆ back to top](#sentivue---emotion-based-gif-captioning-system)**
-
-Made with ❤️ by Akindu27
+Back to top | SentiVue - Emotion-Based GIF Captioning System
 
 </div>
