@@ -1,0 +1,303 @@
+[
+  {
+    "gif_id": "11DPmCCwl0SSis",
+    "true_emotion": "positive_energetic",
+    "predicted_emotion": "positive_calm",
+    "emotion_confidence": 0.6860005855560303,
+    "action": "gargling",
+    "action_confidence": 0.39493587613105774,
+    "objects": [
+      "person"
+    ],
+    "content_type": "real",
+    "setting": "indoor",
+    "lighting": "bright",
+    "baseline_caption": "a peaceful person gargling",
+    "enhanced_caption": "Serene real person gargling in a bright indoor space in this animated clip"
+  },
+  {
+    "gif_id": "11moFh8H3k9M7S",
+    "true_emotion": "positive_energetic",
+    "predicted_emotion": "positive_calm",
+    "emotion_confidence": 0.7094498872756958,
+    "action": null,
+    "action_confidence": 0.0,
+    "objects": [
+      "person",
+      "tie",
+      "tie"
+    ],
+    "content_type": "real",
+    "setting": "indoor",
+    "lighting": "bright",
+    "baseline_caption": "someone calmly relaxing near a tie",
+    "enhanced_caption": "Serene real person adjusts two ties while moving indoors under bright lighting in this animated scene."
+  },
+  {
+    "gif_id": "5vsp9FqLBVk4g",
+    "true_emotion": "positive_energetic",
+    "predicted_emotion": "negative_intense",
+    "emotion_confidence": 0.9959235191345215,
+    "action": "situp",
+    "action_confidence": 0.35349956154823303,
+    "objects": [
+      "person",
+      "person"
+    ],
+    "content_type": "animated",
+    "setting": "indoor",
+    "lighting": "dim",
+    "baseline_caption": "someone situping frustratedly",
+    "enhanced_caption": "Furious animated person sits up beside another in a dimly lit indoor scene."
+  },
+  {
+    "gif_id": "GNGBfs76E3mGk",
+    "true_emotion": "negative_intense",
+    "predicted_emotion": "negative_intense",
+    "emotion_confidence": 0.971294105052948,
+    "action": null,
+    "action_confidence": 0.0,
+    "objects": [
+      "scissors"
+    ],
+    "content_type": "animated",
+    "setting": "indoor",
+    "lighting": "moderate",
+    "baseline_caption": "someone horrifiedly running near a scissors",
+    "enhanced_caption": "Furious animated character moves quickly indoors with scissors in moderate lighting."
+  },
+  {
+    "gif_id": "4yQNYx10VVOb6",
+    "true_emotion": "negative_intense",
+    "predicted_emotion": "positive_calm",
+    "emotion_confidence": 0.4824351668357849,
+    "action": "slapping",
+    "action_confidence": 0.23763538897037506,
+    "objects": [
+      "person"
+    ],
+    "content_type": "real",
+    "setting": "indoor",
+    "lighting": "moderate",
+    "baseline_caption": "someone feeling relaxed while slapping",
+    "enhanced_caption": "Serene real person slapping someone indoors in moderate lighting animated scene"
+  },
+  {
+    "gif_id": "J8Bb15275wt4A",
+    "true_emotion": "negative_intense",
+    "predicted_emotion": "negative_intense",
+    "emotion_confidence": 0.5616605281829834,
+    "action": "yawning",
+    "action_confidence": 0.44664278626441956,
+    "objects": [
+      "person"
+    ],
+    "content_type": "real",
+    "setting": "indoor",
+    "lighting": "moderate",
+    "baseline_caption": "a scared person yawning",
+    "enhanced_caption": "Furious real person yawning in a moderately lit indoor room"
+  },
+  {
+    "gif_id": "oD0YFMXHpwxDq",
+    "true_emotion": "surprise",
+    "predicted_emotion": "positive_energetic",
+    "emotion_confidence": 0.5359492301940918,
+    "action": "reading book",
+    "action_confidence": 0.5739129781723022,
+    "objects": [],
+    "content_type": "animated",
+    "setting": "outdoor",
+    "lighting": "moderate",
+    "baseline_caption": "someone reading book delightedly",
+    "enhanced_caption": "Excited animated character reading book outdoors under moderate lighting."
+  },
+  {
+    "gif_id": "13yyvZdx0W6kTK",
+    "true_emotion": "surprise",
+    "predicted_emotion": "surprise",
+    "emotion_confidence": 0.9989542961120605,
+    "action": "crying",
+    "action_confidence": 0.4922885000705719,
+    "objects": [
+      "person"
+    ],
+    "content_type": "animated",
+    "setting": "indoor",
+    "lighting": "moderate",
+    "baseline_caption": "a bewildered person crying",
+    "enhanced_caption": "Astonished animated person bursts into crying fit indoors under moderate lighting."
+  },
+  {
+    "gif_id": "VZ931BnGGAFoc",
+    "true_emotion": "surprise",
+    "predicted_emotion": "surprise",
+    "emotion_confidence": 0.9991225600242615,
+    "action": null,
+    "action_confidence": 0.0,
+    "objects": [
+      "person",
+      "person"
+    ],
+    "content_type": "real",
+    "setting": "indoor",
+    "lighting": "moderate",
+    "baseline_caption": "someone feeling speechless while stepping back",
+    "enhanced_caption": "Astonished real person bumps into another in a moderately lit indoor space with sudden movement."
+  },
+  {
+    "gif_id": "ws4pzeC916KRO",
+    "true_emotion": "negative_subdued",
+    "predicted_emotion": "negative_subdued",
+    "emotion_confidence": 0.9888916015625,
+    "action": null,
+    "action_confidence": 0.0,
+    "objects": [
+      "person"
+    ],
+    "content_type": "real",
+    "setting": "indoor",
+    "lighting": "moderate",
+    "baseline_caption": "a somber person sitting",
+    "enhanced_caption": "A sad animated person walks slowly in a moderately lit indoor room."
+  },
+  {
+    "gif_id": "14eQNo68VAXUfS",
+    "true_emotion": "negative_subdued",
+    "predicted_emotion": "negative_subdued",
+    "emotion_confidence": 0.9904056191444397,
+    "action": "crying",
+    "action_confidence": 0.866670548915863,
+    "objects": [
+      "person",
+      "person",
+      "person"
+    ],
+    "content_type": "animated",
+    "setting": "indoor",
+    "lighting": "dim",
+    "baseline_caption": "a sad person crying",
+    "enhanced_caption": "Sad animated person crying with two others in dim indoor scene"
+  },
+  {
+    "gif_id": "48c6Ky52T6HcI",
+    "true_emotion": "negative_subdued",
+    "predicted_emotion": "negative_intense",
+    "emotion_confidence": 0.564725399017334,
+    "action": null,
+    "action_confidence": 0.0,
+    "objects": [],
+    "content_type": "real",
+    "setting": "indoor",
+    "lighting": "moderate",
+    "baseline_caption": "a frustrated person yelling",
+    "enhanced_caption": "Furious real person moves quickly in a moderately lit indoor space in this animated clip"
+  },
+  {
+    "gif_id": "3YsEPo1u3C8dW",
+    "true_emotion": "positive_calm",
+    "predicted_emotion": "positive_calm",
+    "emotion_confidence": 0.9186274409294128,
+    "action": "brush painting",
+    "action_confidence": 0.19987283647060394,
+    "objects": [
+      "person",
+      "person",
+      "potted plant"
+    ],
+    "content_type": "animated",
+    "setting": "indoor",
+    "lighting": "moderate",
+    "baseline_caption": "a soothing person brush painting with a potted plant",
+    "enhanced_caption": "Serene animated person brush painting near another person and potted plant indoors."
+  },
+  {
+    "gif_id": "A9grgCQ0Dm012",
+    "true_emotion": "positive_calm",
+    "predicted_emotion": "surprise",
+    "emotion_confidence": 0.7029374241828918,
+    "action": null,
+    "action_confidence": 0.0,
+    "objects": [
+      "person",
+      "person",
+      "fire hydrant",
+      "person",
+      "person"
+    ],
+    "content_type": "real",
+    "setting": "indoor",
+    "lighting": "moderate",
+    "baseline_caption": "a astonished person freezing with a fire hydrant",
+    "enhanced_caption": "Astonished animated person runs past another person near a fire hydrant indoors."
+  },
+  {
+    "gif_id": "44L0gIN94vMEE",
+    "true_emotion": "positive_calm",
+    "predicted_emotion": "positive_energetic",
+    "emotion_confidence": 0.49350571632385254,
+    "action": null,
+    "action_confidence": 0.0,
+    "objects": [
+      "dog"
+    ],
+    "content_type": "animated",
+    "setting": "indoor",
+    "lighting": "dim",
+    "baseline_caption": "someone excitedly running with a dog",
+    "enhanced_caption": "Happy animated dog runs around in a dimly lit indoor room"
+  },
+  {
+    "gif_id": "L29fiOMSDhhvi",
+    "true_emotion": "contempt",
+    "predicted_emotion": "negative_intense",
+    "emotion_confidence": 0.7874032855033875,
+    "action": "whistling",
+    "action_confidence": 0.32695621252059937,
+    "objects": [
+      "person",
+      "person",
+      "tie"
+    ],
+    "content_type": "real",
+    "setting": "indoor",
+    "lighting": "dim",
+    "baseline_caption": "someone enragedly whistling near a tie",
+    "enhanced_caption": "Furious real person whistling at another in dim indoor room, one wearing a tie."
+  },
+  {
+    "gif_id": "Plv18qor1IdHi",
+    "true_emotion": "contempt",
+    "predicted_emotion": "contempt",
+    "emotion_confidence": 0.954470157623291,
+    "action": null,
+    "action_confidence": 0.0,
+    "objects": [
+      "person"
+    ],
+    "content_type": "real",
+    "setting": "indoor",
+    "lighting": "dim",
+    "baseline_caption": "someone feeling snide while rolling eyes",
+    "enhanced_caption": "Dismissive person walks away in dimly lit indoor space in this animated GIF."
+  },
+  {
+    "gif_id": "VxLkYEkjHviP6",
+    "true_emotion": "contempt",
+    "predicted_emotion": "contempt",
+    "emotion_confidence": 0.9881239533424377,
+    "action": "playing poker",
+    "action_confidence": 0.2631860077381134,
+    "objects": [
+      "person",
+      "person",
+      "person",
+      "person"
+    ],
+    "content_type": "animated",
+    "setting": "indoor",
+    "lighting": "moderate",
+    "baseline_caption": "a contemptuous person playing poker",
+    "enhanced_caption": "Dismissive animated person beats two others playing poker indoors."
+  }
+]
