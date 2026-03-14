@@ -1,6 +1,6 @@
 // services/captionService.ts
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
 
 // Define the response type
 interface CaptionResponse {
