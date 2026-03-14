@@ -1,3 +1,13 @@
+---
+title: "SentiVue Backend"
+emoji: "📦"
+colorFrom: "gray"
+colorTo: "blue"
+sdk: "docker"
+app_file: "app.py"
+pinned: false
+---
+
 # SentiVue Backend
 
 This FastAPI backend is used by the SentiVue frontend.
