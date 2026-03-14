@@ -27,10 +27,3 @@
     @apply transition-all duration-300 hover:scale-105 hover:shadow-2xl;
   }
 }
-
-/* Custom font family assignments */
-@font-face {
-  font-family: 'Poppins';
-  font-weight: 400;
-  src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
-}
