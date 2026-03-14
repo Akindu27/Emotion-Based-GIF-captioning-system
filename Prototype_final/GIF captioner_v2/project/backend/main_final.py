@@ -16,8 +16,10 @@ from ultralytics import YOLO
 
 import random
 import io
+import os
 import cv2
 import numpy as np
+from huggingface_hub import hf_hub_download
 from typing import List, Optional, Tuple, Dict, Set
 
 # ============================================================
@@ -83,6 +85,50 @@ emotion_vocabulary = {
 }
 
 # ============================================================
+# MODEL WEIGHT DOWNLOAD (Hugging Face)**
+# ============================================================
+
+HF_MODEL_REPO = "Akindu27/sentivue-models"  # set your model repo name
+
+def ensure_model_file(filename: str):
+    models_dir = "models"
+    os.makedirs(models_dir, exist_ok=True)
+    filepath = os.path.join(models_dir, filename)
+    if os.path.exists(filepath):
+        print(f"Model file already exists: {filepath}")
+        return filepath
+
+    token = (
+        os.getenv("HF_TOKEN")
+        or os.getenv("HUGGINGFACE_HUB_TOKEN")
+        or os.getenv("HUGGINGFACE_TOKEN")
+        or None
+    )
+
+    try:
+        print(f"Downloading {filename} from {HF_MODEL_REPO}...")
+        hf_hub_download(
+            repo_id=HF_MODEL_REPO,
+            repo_type="model",
+            filename=filename,
+            local_dir=models_dir,
+            use_auth_token=token,
+        )
+        print(f"Downloaded {filename} to {filepath}")
+    except Exception as e:
+        msg = (
+            f"Failed to download {filename}: {e}. "
+            "If the repository is private, set HF_TOKEN environment variable in your Space"
+        )
+        raise RuntimeError(msg)
+
+    if not os.path.exists(filepath):
+        raise FileNotFoundError(f"Model file not found after download: {filepath}")
+
+    return filepath
+
+
+# ============================================================
 # MODELS
 # ============================================================
 
@@ -107,13 +153,15 @@ class GroupedEmotionClassifier(nn.Module):
 
 print("Loading emotion detection model (grouped ResNet50)...")
 emotion_model = GroupedEmotionClassifier(num_classes=6)
-emotion_model.load_state_dict(torch.load("models/best_model_grouped.pth", map_location=device))
+model_path = ensure_model_file("best_model_grouped.pth")
+emotion_model.load_state_dict(torch.load(model_path, map_location=device))
 emotion_model = emotion_model.to(device)
 emotion_model.eval()
 print("Emotion model loaded!")
 
 print("Loading YOLO object detector...")
-object_detector = YOLO("models/yolov8n.pt")
+yolo_path = ensure_model_file("yolov8n.pt")
+object_detector = YOLO(yolo_path)
 print("YOLO loaded!")
 
 print("Loading action detection model (VideoMAE)...")
