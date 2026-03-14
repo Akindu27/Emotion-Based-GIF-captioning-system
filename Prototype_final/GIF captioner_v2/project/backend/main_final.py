@@ -1,11 +1,20 @@
-# ============================================================
-# SENTIVUE BACKEND - FINAL (CAPTIONING)
-# Grouped Emotion (ResNet50) + Multi-frame Objects + Person Count + Lighting
-# ============================================================
+"""
+SentiVue Backend API
+====================
+Emotion-aware GIF captioning system using:
+- Grouped Emotion Detection (ResNet50)
+- Multi-frame Object Detection (YOLO)
+- Action Recognition (VideoMAE)
+- Person Counting & Lighting Analysis
+
+Author: Akindu27
+License: MIT
+"""
 
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import logging
 
 import torch
 import torch.nn as nn
@@ -23,32 +32,45 @@ from huggingface_hub import hf_hub_download
 from typing import List, Optional, Tuple, Dict, Set
 
 # ============================================================
+# LOGGING SETUP
+# ============================================================
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# ============================================================
+# ENVIRONMENT & CONFIGURATION
+# ============================================================
+
+HF_MODEL_REPO = os.getenv("HF_MODEL_REPO", "Akindu27/sentivue-models")
+MODELS_DIR = os.getenv("MODELS_DIR", "models")
+API_VERSION = "2.1.0"
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+logger.info(f"Using device: {device}")
+
+# ============================================================
 # FASTAPI APP SETUP
 # ============================================================
 
-app = FastAPI(title="SentiVue API - Final", version="2.1.0")
+app = FastAPI(
+    title="SentiVue API",
+    description="Emotion-aware GIF captioning system",
+    version=API_VERSION
+)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5173", "http://localhost:5173", "*"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # ============================================================
-# DEVICE
+# EMOTION CONFIGURATION
 # ============================================================
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f" Using device: {device}")
-
-# ============================================================
-# EMOTION LABELS (GROUPED MODEL ORDER)
-# IMPORTANT: This must match training label order for best_model_grouped.pth
-# ============================================================
-
-emotion_groups = [
+EMOTION_GROUPS = [
     "contempt",
     "negative_intense",
     "negative_subdued",
@@ -57,7 +79,7 @@ emotion_groups = [
     "surprise",
 ]
 
-emotion_vocabulary = {
+EMOTION_VOCABULARY = {
     "positive_energetic": {
         "adjectives": ["joyful", "happy", "excited", "cheerful", "enthusiastic", "energetic", "elated", "thrilled", "ecstatic", "delighted"],
         "verbs": ["dancing", "jumping", "celebrating", "cheering", "laughing", "playing", "running", "clapping", "bouncing", "spinning"],
@@ -85,42 +107,56 @@ emotion_vocabulary = {
 }
 
 # ============================================================
-# MODEL WEIGHT DOWNLOAD (Hugging Face)**
+# MODEL LOADING UTILITIES
 # ============================================================
 
-HF_MODEL_REPO = "Akindu27/sentivue-models"  # set your model repo name
-
-def ensure_model_file(filename: str):
-    models_dir = "models"
-    os.makedirs(models_dir, exist_ok=True)
-    filepath = os.path.join(models_dir, filename)
+def ensure_model_file(filename: str) -> str:
+    """
+    Download model from Hugging Face Hub if not cached locally.
+    
+    Args:
+        filename: Name of the model file to download
+        
+    Returns:
+        Path to the model file
+        
+    Raises:
+        RuntimeError: If download fails
+        FileNotFoundError: If file not found after download
+    """
+    os.makedirs(MODELS_DIR, exist_ok=True)
+    filepath = os.path.join(MODELS_DIR, filename)
+    
     if os.path.exists(filepath):
-        print(f"Model file already exists: {filepath}")
+        logger.info(f"Model file already cached: {filepath}")
         return filepath
 
     token = (
         os.getenv("HF_TOKEN")
         or os.getenv("HUGGINGFACE_HUB_TOKEN")
         or os.getenv("HUGGINGFACE_TOKEN")
-        or None
     )
 
     try:
-        print(f"Downloading {filename} from {HF_MODEL_REPO}...")
-        hf_hub_download(
-            repo_id=HF_MODEL_REPO,
-            repo_type="model",
-            filename=filename,
-            local_dir=models_dir,
-            use_auth_token=token,
-        )
-        print(f"Downloaded {filename} to {filepath}")
+        logger.info(f"Downloading {filename} from {HF_MODEL_REPO}...")
+        download_kwargs = {
+            "repo_id": HF_MODEL_REPO,
+            "repo_type": "model",
+            "filename": filename,
+            "local_dir": MODELS_DIR,
+        }
+        if token:
+            download_kwargs["token"] = token
+        
+        hf_hub_download(**download_kwargs)
+        logger.info(f"Successfully downloaded {filename}")
     except Exception as e:
-        msg = (
+        error_msg = (
             f"Failed to download {filename}: {e}. "
-            "If the repository is private, set HF_TOKEN environment variable in your Space"
+            "If the repository is private, set HF_TOKEN environment variable."
         )
-        raise RuntimeError(msg)
+        logger.error(error_msg)
+        raise RuntimeError(error_msg)
 
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"Model file not found after download: {filepath}")
@@ -129,10 +165,18 @@ def ensure_model_file(filename: str):
 
 
 # ============================================================
-# MODELS
+# NEURAL NETWORK MODELS
 # ============================================================
 
 class GroupedEmotionClassifier(nn.Module):
+    """
+    ResNet50-based emotion classifier for grouped emotions.
+    
+    Architecture:
+    - ResNet50 feature extractor
+    - 2-layer classifier with dropout and batch normalization
+    """
+    
     def __init__(self, num_classes: int = 6):
         super().__init__()
         resnet = models.resnet50(weights=None)
@@ -147,24 +191,39 @@ class GroupedEmotionClassifier(nn.Module):
             nn.Linear(512, num_classes),
         )
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Forward pass through the model."""
         x = self.features(x)
         return self.classifier(x)
 
-print("Loading emotion detection model (grouped ResNet50)...")
+
+# ============================================================
+# MODEL INITIALIZATION
+# ============================================================
+
+logger.info("Initializing models...")
+
+# Emotion model
+logger.info("Loading emotion detection model (grouped ResNet50)...")
 emotion_model = GroupedEmotionClassifier(num_classes=6)
 model_path = ensure_model_file("best_model_grouped.pth")
 emotion_model.load_state_dict(torch.load(model_path, map_location=device))
 emotion_model = emotion_model.to(device)
 emotion_model.eval()
-print("Emotion model loaded!")
+logger.info("✓ Emotion model loaded")
 
-print("Loading YOLO object detector...")
+# Object detection model
+logger.info("Loading YOLO object detector...")
 yolo_path = ensure_model_file("yolov8n.pt")
 object_detector = YOLO(yolo_path)
-print("YOLO loaded!")
+logger.info("✓ YOLO loaded")
 
-print("Loading action detection model (VideoMAE)...")
+# Action detection model
+logger.info("Loading action detection model (VideoMAE)...")
+ACTION_DETECTION_ENABLED = False
+action_processor = None
+action_model = None
+
 try:
     from transformers import VideoMAEImageProcessor, VideoMAEForVideoClassification
     action_processor = VideoMAEImageProcessor.from_pretrained("MCG-NJU/videomae-base-finetuned-kinetics")
@@ -172,15 +231,11 @@ try:
     action_model.to(device)
     action_model.eval()
     ACTION_DETECTION_ENABLED = True
-    print("VideoMAE loaded!")
+    logger.info("✓ VideoMAE loaded")
 except Exception as e:
-    print(f"!!!  VideoMAE not available: {e}")
-    ACTION_DETECTION_ENABLED = False
+    logger.warning(f"VideoMAE not available: {e}")
 
-# ============================================================
-# TRANSFORMS
-# ============================================================
-
+# Image preprocessing
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
@@ -188,10 +243,11 @@ transform = transforms.Compose([
 ])
 
 # ============================================================
-# HELPERS
+# HELPER FUNCTIONS
 # ============================================================
 
 def extract_middle_frame(gif_bytes: bytes) -> Optional[Image.Image]:
+    """Extract the middle frame from a GIF."""
     try:
         gif = Image.open(io.BytesIO(gif_bytes))
         frames = [fr.convert("RGB") for fr in ImageSequence.Iterator(gif)]
@@ -199,10 +255,12 @@ def extract_middle_frame(gif_bytes: bytes) -> Optional[Image.Image]:
             return None
         return frames[len(frames) // 2]
     except Exception as e:
-        print(f"xxx Error extracting middle frame: {e}")
+        logger.error(f"Error extracting middle frame: {e}")
         return None
 
+
 def extract_k_frames_evenly(gif_bytes: bytes, k: int = 8) -> List[Image.Image]:
+    """Extract k frames evenly distributed across the GIF."""
     try:
         gif = Image.open(io.BytesIO(gif_bytes))
         frames = [fr.convert("RGB") for fr in ImageSequence.Iterator(gif)]
@@ -213,25 +271,40 @@ def extract_k_frames_evenly(gif_bytes: bytes, k: int = 8) -> List[Image.Image]:
         idxs = np.linspace(0, len(frames) - 1, k, dtype=int)
         return [frames[i] for i in idxs]
     except Exception as e:
-        print(f"xxx Error extracting frames: {e}")
+        logger.error(f"Error extracting frames: {e}")
         return []
+
 
 @torch.no_grad()
 def detect_emotion(frame: Image.Image) -> Tuple[str, float]:
+    """
+    Detect emotion from a frame.
+    
+    Returns:
+        Tuple of (emotion_label, confidence)
+    """
     try:
         x = transform(frame).unsqueeze(0).to(device)
         out = emotion_model(x)
         probs = torch.softmax(out, dim=1)[0]
         idx = int(torch.argmax(probs).item())
         conf = float(probs[idx].item())
-        return emotion_groups[idx], conf
+        return EMOTION_GROUPS[idx], conf
     except Exception as e:
-        print(f"xxx Error detecting emotion: {e}")
+        logger.error(f"Error detecting emotion: {e}")
         return "positive_energetic", 0.30
+
 
 def detect_content_type(frame: Image.Image) -> Tuple[str, float]:
     """
-    Simple heuristic: face => real_world; otherwise low-color + saturation => cartoon
+    Classify content as real_world or cartoon using heuristics.
+    
+    Heuristics:
+    - Presence of faces -> real_world
+    - Low color count + high saturation -> cartoon
+    
+    Returns:
+        Tuple of (content_type, confidence)
     """
     try:
         img_array = np.array(frame)
@@ -249,7 +322,7 @@ def detect_content_type(frame: Image.Image) -> Tuple[str, float]:
         faces = face_cascade.detectMultiScale(gray, 1.1, 4)
         has_face = len(faces) > 0
 
-        print(f" Content Detection - Color: {color_ratio:.3f}, Sat: {saturation:.3f}, Face: {has_face}")
+        logger.debug(f"Content - Color ratio: {color_ratio:.3f}, Saturation: {saturation:.3f}, Face: {has_face}")
 
         if has_face:
             return "real_world", 0.95
@@ -261,30 +334,32 @@ def detect_content_type(frame: Image.Image) -> Tuple[str, float]:
             return "cartoon", 0.70
         return "real_world", 0.60
     except Exception as e:
-        print(f"xxx Error detecting content type: {e}")
+        logger.error(f"Error detecting content type: {e}")
         return "real_world", 0.50
+
 
 def analyze_lighting(frame: Image.Image) -> Dict[str, float | str]:
     """
-    Returns simple brightness stats for 'scene understanding' without extra models:
-    - brightness: mean grayscale intensity (0-255)
-    - lighting_label: dim / moderate / bright
+    Analyze lighting/brightness characteristics of a frame.
+    
+    Returns:
+        Dict with 'brightness' (0-255) and 'lighting_label' (dim/moderate/bright)
     """
     try:
         img = np.array(frame.convert("RGB"))
         gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-        b = float(np.mean(gray))
+        brightness = float(np.mean(gray))
 
-        if b < 80:
+        if brightness < 80:
             label = "dim"
-        elif b > 140:
+        elif brightness > 140:
             label = "bright"
         else:
             label = "moderate"
 
-        return {"brightness": b, "lighting_label": label}
+        return {"brightness": brightness, "lighting_label": label}
     except Exception as e:
-        print(f"xxx Lighting analysis error: {e}")
+        logger.error(f"Lighting analysis error: {e}")
         return {"brightness": -1.0, "lighting_label": "unknown"}
 
 def detect_objects_multiframe_vote(
@@ -296,8 +371,18 @@ def detect_objects_multiframe_vote(
     drop_labels: Optional[Set[str]] = None,
 ) -> List[str]:
     """
-    Vote objects across multiple frames to improve recall.
-    Removes generic human labels.
+    Detect objects across multiple frames and vote to improve recall.
+    
+    Args:
+        gif_bytes: GIF file bytes
+        k: Number of frames to sample
+        top_n: Maximum objects to return
+        min_votes: Minimum votes required for an object to be included
+        conf_thresh: Confidence threshold for detections
+        drop_labels: Labels to exclude (e.g., generic "person")
+        
+    Returns:
+        List of detected object labels, ranked by frequency
     """
     if drop_labels is None:
         drop_labels = {"person", "man", "woman", "people", "human"}
@@ -323,13 +408,13 @@ def detect_objects_multiframe_vote(
                     if name and name not in drop_labels:
                         objs.append((name, conf))
         except Exception as e:
-            print(f"xxx YOLO frame error: {e}")
+            logger.debug(f"YOLO frame error: {e}")
             continue
 
         objs.sort(key=lambda x: x[1], reverse=True)
         kept = [n for (n, c) in objs if c >= conf_thresh]
         if not kept and objs:
-            kept = [objs[0][0]]  # top-1 fallback
+            kept = [objs[0][0]]
         all_labels.extend(kept[:2])
 
     if not all_labels:
@@ -341,10 +426,9 @@ def detect_objects_multiframe_vote(
         winners = [lbl for lbl, _ in counts.most_common(top_n)]
     return winners[:top_n]
 
+
 def count_people(frame: Image.Image, conf_thresh: float = 0.25) -> int:
-    """
-    Count persons in a frame using YOLO 'person' class.
-    """
+    """Count persons in a frame using YOLO 'person' class."""
     try:
         results = object_detector(frame, verbose=False)
         person_count = 0
@@ -359,10 +443,12 @@ def count_people(frame: Image.Image, conf_thresh: float = 0.25) -> int:
                     person_count += 1
         return person_count
     except Exception as e:
-        print(f"xxx Person count error: {e}")
+        logger.error(f"Person count error: {e}")
         return 0
 
+
 def extract_frames_for_action(gif_bytes: bytes, num_frames: int = 16) -> Optional[List[Image.Image]]:
+    """Extract evenly distributed frames for action detection."""
     try:
         gif = Image.open(io.BytesIO(gif_bytes))
         frames = [fr.convert("RGB") for fr in ImageSequence.Iterator(gif)]
@@ -371,10 +457,12 @@ def extract_frames_for_action(gif_bytes: bytes, num_frames: int = 16) -> Optiona
         idxs = np.linspace(0, len(frames) - 1, num_frames, dtype=int)
         return [frames[i] for i in idxs]
     except Exception as e:
-        print(f"xxx Error extracting frames for action: {e}")
+        logger.error(f"Error extracting frames for action: {e}")
         return None
 
+
 def detect_action(gif_bytes: bytes) -> Optional[str]:
+    """Detect action/activity in a GIF using VideoMAE."""
     if not ACTION_DETECTION_ENABLED:
         return None
     try:
@@ -396,10 +484,12 @@ def detect_action(gif_bytes: bytes) -> Optional[str]:
             return label.replace("(", "").replace(")", "").strip().lower()
         return None
     except Exception as e:
-        print(f"xxx Action detection error: {e}")
+        logger.error(f"Action detection error: {e}")
         return None
 
+
 def motion_based_fallback_action(gif_bytes: bytes) -> str:
+    """Fallback action detection based on optical flow/motion magnitude."""
     frames = extract_k_frames_evenly(gif_bytes, k=6)
     if len(frames) < 2:
         return "reacting"
@@ -415,7 +505,7 @@ def motion_based_fallback_action(gif_bytes: bytes) -> str:
     return "reacting"
 
 # ============================================================
-# CAPTION GENERATION (CLEAN TGIF-LIKE)
+# CAPTION GENERATION
 # ============================================================
 
 def generate_caption(
@@ -424,17 +514,32 @@ def generate_caption(
     action: Optional[str] = None,
     content_type: str = "real_world",
 ) -> str:
+    """
+    Generate a natural language caption describing the GIF.
+    
+    Uses emotion-specific vocabulary, objects, and actions to create
+    contextually appropriate descriptions.
+    
+    Args:
+        emotion: Emotion label from emotion classifier
+        objects: Detected objects in the GIF
+        action: Detected action/activity
+        content_type: Type of content (real_world or cartoon)
+        
+    Returns:
+        Natural language caption string
+    """
     objects = objects or []
 
-    # Cartoon: keep short + safe (you used this earlier)
+    # Cartoon content gets shorter, safer captions
     if content_type == "cartoon":
         emotion_word = emotion.replace("_", " ")
         return f"an animated {emotion_word} moment"
 
-    vocab = emotion_vocabulary.get(emotion, emotion_vocabulary["positive_energetic"])
+    vocab = EMOTION_VOCABULARY.get(emotion, EMOTION_VOCABULARY["positive_energetic"])
     adj = random.choice(vocab["adjectives"])
 
-    # action phrase
+    # Construct action phrase
     if action:
         words = action.lower().split()
         verb = " ".join(words[:2]) if len(words) > 2 else action.lower()
@@ -449,7 +554,7 @@ def generate_caption(
     else:
         verb = random.choice(vocab["verbs"])
 
-    # object selection
+    # Build caption with objects if available
     if objects:
         animals = {"dog", "cat", "bird", "horse", "bear", "elephant", "giraffe", "zebra", "lion", "tiger", "cow", "sheep", "monkey", "rabbit"}
         interesting = [o for o in objects if o.lower() not in {"person", "man", "woman", "people", "human"}]
@@ -479,14 +584,15 @@ def generate_caption(
         ]
 
     caption = random.choice(templates)
-    print(f"💬 Generated caption: '{caption}' (emotion={emotion}, objects={objects}, action={action}, type={content_type})")
+    logger.info(f"Generated caption: '{caption}' (emotion={emotion}, objects={objects}, action={action})")
     return caption
 
 # ============================================================
-# RESPONSE MODEL
+# API RESPONSE MODEL
 # ============================================================
 
 class CaptionResponse(BaseModel):
+    """Response model for caption generation endpoint."""
     emotion: str
     caption: str
     confidence: Optional[float] = None
@@ -495,69 +601,89 @@ class CaptionResponse(BaseModel):
     content_type: Optional[str] = None
     content_warning: Optional[str] = None
     person_count: Optional[int] = None
-    lighting: Optional[dict] = None  # {"brightness":..., "lighting_label":...}
+    lighting: Optional[dict] = None
+
 
 # ============================================================
 # API ENDPOINTS
 # ============================================================
 
-@app.get("/")
-async def root():
+@app.get("/", tags=["Health"])
+async def health() -> dict:
+    """
+    Health check endpoint.
+    
+    Returns information about the API and loaded models.
+    """
     return {
         "status": "healthy",
-        "service": "SentiVue API - Final",
-        "version": "2.1.0",
+        "service": "SentiVue API",
+        "version": API_VERSION,
         "features": {
-            "emotion_grouped": True,
-            "object_multiframe": True,
-            "person_count": True,
-            "lighting": True,
+            "emotion_detection": True,
+            "object_detection": True,
+            "person_counting": True,
+            "lighting_analysis": True,
             "action_detection": ACTION_DETECTION_ENABLED,
-            "content_filtering": True,
-            "depth_in_backend": False,  # handled in separate notebook
+            "content_type_detection": True,
         },
+        "emotion_groups": EMOTION_GROUPS,
     }
 
-@app.post("/generate", response_model=CaptionResponse)
-async def generate_gif_caption(file: UploadFile = File(...)):
+
+@app.post("/generate", response_model=CaptionResponse, tags=["Caption Generation"])
+async def generate_gif_caption(file: UploadFile = File(...)) -> CaptionResponse:
+    """
+    Generate an emotion-aware caption for an uploaded GIF.
+    
+    Args:
+        file: GIF file to process
+        
+    Returns:
+        CaptionResponse with caption, emotion, objects, and metadata
+        
+    Raises:
+        HTTPException: 400 if GIF cannot be processed, 500 if internal error occurs
+    """
     try:
         gif_bytes = await file.read()
 
+        # Extract middle frame for analysis
         frame = extract_middle_frame(gif_bytes)
         if frame is None:
             raise HTTPException(status_code=400, detail="Failed to process GIF")
 
-        # Content type
+        # Detect content type (real_world vs cartoon)
         content_type, _ = detect_content_type(frame)
 
-        # Lighting analysis (always)
+        # Analyze lighting
         lighting = analyze_lighting(frame)
 
-        # Emotion (always)
+        # Detect emotion from middle frame
         emotion, emotion_conf = detect_emotion(frame)
 
-        # Person count (frame-based)
+        # Count persons
         person_count = count_people(frame, conf_thresh=0.25)
 
-        # Multi-frame objects vote
+        # Multi-frame object detection
         objects = detect_objects_multiframe_vote(
             gif_bytes, k=8, top_n=2, min_votes=2, conf_thresh=0.20
         )
 
-        # Action (real-world only)
+        # Action detection (real_world only)
         action = None
         if content_type == "real_world":
             action = detect_action(gif_bytes)
             if action is None:
                 action = motion_based_fallback_action(gif_bytes)
 
-        # Caption
+        # Generate caption
         caption = generate_caption(emotion, objects, action, content_type)
 
-        # Warning logic (minimal)
+        # Content warning logic
         content_warning = None
         if content_type == "cartoon":
-            content_warning = "Animated/cartoon content detected; emotion/action may be less reliable."
+            content_warning = "Animated content detected; emotion/action may be less reliable."
         elif emotion_conf < 0.25:
             content_warning = "Low confidence emotion detection; caption may be less accurate."
 
@@ -576,11 +702,13 @@ async def generate_gif_caption(file: UploadFile = File(...)):
     except HTTPException:
         raise
     except Exception as e:
-        print(f"xxx Unexpected error: {e}")
+        logger.exception(f"Unexpected error during caption generation: {e}")
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
-@app.get("/health")
-async def health_check():
+
+@app.get("/health", tags=["Health"])
+async def health_detailed() -> dict:
+    """Detailed health check with model status."""
     return {
         "status": "healthy",
         "device": str(device),
@@ -589,7 +717,7 @@ async def health_check():
             "objects": "loaded",
             "action": "loaded" if ACTION_DETECTION_ENABLED else "disabled",
         },
-        "emotion_groups": emotion_groups,
+        "emotion_groups": EMOTION_GROUPS,
     }
 
 # ============================================================
@@ -599,19 +727,14 @@ async def health_check():
 if __name__ == "__main__":
     import uvicorn
 
-    print("\n" + "=" * 60)
-    print(" SENTIVUE BACKEND API - FINAL v2.1")
-    print("=" * 60)
-    print(f"Device: {device}")
-    print(f"Emotion groups: {emotion_groups}")
-    print(f"Action detection: {' Enabled' if ACTION_DETECTION_ENABLED else '! Disabled'}")
-    print("Content filtering:  Enabled")
-    print("Object voting:  Multi-frame")
-    print("Person count:  YOLO person class")
-    print("Lighting:  Brightness heuristic")
-    print("Depth:  (use separate notebook)")
-    print("=" * 60)
-    print("\n Starting server on http://127.0.0.1:8000")
-    print(" API docs: http://127.0.0.1:8000/docs\n")
+    logger.info("=" * 70)
+    logger.info("🎬 SentiVue Backend API - Starting")
+    logger.info("=" * 70)
+    logger.info(f"Version: {API_VERSION}")
+    logger.info(f"Device: {device}")
+    logger.info(f"Emotion Groups: {len(EMOTION_GROUPS)} - {', '.join(EMOTION_GROUPS)}")
+    logger.info(f"Action Detection: {'Enabled ✓' if ACTION_DETECTION_ENABLED else 'Disabled ✗'}")
+    logger.info(f"API Docs: http://0.0.0.0:7860/docs")
+    logger.info("=" * 70)
 
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=7860)
