@@ -18,21 +18,26 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    background: linear-gradient(to bottom right, rgb(88, 28, 135), rgb(157, 23, 77), rgb(88, 28, 135));
   }
 
   body {
     @apply font-poppins;
     overflow-x: hidden;
+    background: linear-gradient(to bottom right, rgb(88, 28, 135), rgb(157, 23, 77), rgb(88, 28, 135));
   }
 
   #root {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-space-grotesk;
   }
+}
 }
 
 @layer components {
