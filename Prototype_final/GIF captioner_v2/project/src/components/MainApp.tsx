@@ -147,30 +147,30 @@ export default function MainApp({ onBackToHome }: MainAppProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-purple-900 overflow-hidden">
+    <div className="w-full min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-purple-900 overflow-hidden flex flex-col">
       {/* Background Decor */}
-      <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
         <div className="absolute top-40 left-20 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
         <div className="absolute top-60 right-20 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-700"></div>
         <div className="absolute -bottom-20 left-1/2 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000"></div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-8">
+      <div className="relative z-10 flex-1 flex flex-col max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 overflow-y-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-5xl md:text-6xl font-space-grotesk font-bold bg-gradient-to-r from-pink-200 via-purple-200 to-pink-200 bg-clip-text text-transparent mb-4 tracking-tight">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-space-grotesk font-bold bg-gradient-to-r from-pink-200 via-purple-200 to-pink-200 bg-clip-text text-transparent mb-3 sm:mb-4 tracking-tight">
             SENTIVUE
           </h1>
-          <p className="text-purple-100 text-lg font-poppins">
+          <p className="text-purple-100 text-base sm:text-lg font-poppins px-4">
             Generate emotion-aware captions for your GIFs
           </p>
         </div>
 
         {!showResults ? (
           /* Upload View */
-          <div className="max-w-2xl mx-auto space-y-8">
+          <div className="flex-1 max-w-2xl mx-auto w-full space-y-6 sm:space-y-8">
             {previewUrl && (
-              <div className="bg-gradient-to-br from-white/10 to-purple-500/10 rounded-2xl shadow-xl p-6 border border-pink-300/30 backdrop-blur-xl">
+              <div className="bg-gradient-to-br from-white/10 to-purple-500/10 rounded-2xl shadow-xl p-4 sm:p-6 border border-pink-300/30 backdrop-blur-xl">
                 <h3 className="text-lg font-space-grotesk font-bold bg-gradient-to-r from-pink-200 to-purple-200 bg-clip-text text-transparent mb-4">
                   Preview
                 </h3>
@@ -184,19 +184,19 @@ export default function MainApp({ onBackToHome }: MainAppProps) {
               </div>
             )}
 
-            <div className="mb-8">
-              <label className="block text-lg font-space-grotesk font-bold bg-gradient-to-r from-pink-200 to-purple-200 bg-clip-text text-transparent mb-4">
+            <div className="mb-6 sm:mb-8">
+              <label className="block text-base sm:text-lg font-space-grotesk font-bold bg-gradient-to-r from-pink-200 to-purple-200 bg-clip-text text-transparent mb-3 sm:mb-4">
                 Try Sample GIFs
               </label>
               <div className="relative">
                 <button
                   onClick={() => setShowSampleDropdown(!showSampleDropdown)}
-                  className="w-full bg-gradient-to-r from-pink-500/20 to-purple-500/20 border-2 border-pink-300/50 rounded-xl px-4 py-3 flex items-center justify-between hover:from-pink-500/30 hover:to-purple-500/30 hover:border-pink-300 transition-all duration-300 group"
+                  className="w-full bg-gradient-to-r from-pink-500/20 to-purple-500/20 border-2 border-pink-300/50 rounded-xl px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between hover:from-pink-500/30 hover:to-purple-500/30 hover:border-pink-300 transition-all duration-300 group text-sm sm:text-base"
                 >
                   <span className="text-purple-100 font-poppins group-hover:text-white transition-colors">
                     {selectedSample || 'Select a sample GIF'}
                   </span>
-                  <ChevronDown className={`w-5 h-5 text-pink-300 transition-transform duration-300 ${showSampleDropdown ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 sm:w-5 sm:h-5 text-pink-300 transition-transform duration-300 ${showSampleDropdown ? 'rotate-180' : ''}`} />
                 </button>
                 {showSampleDropdown && (
                   <div className="absolute z-20 w-full mt-2 bg-gradient-to-br from-purple-900/95 to-pink-900/95 backdrop-blur-xl border border-pink-300/50 rounded-xl overflow-hidden shadow-2xl">
@@ -204,7 +204,7 @@ export default function MainApp({ onBackToHome }: MainAppProps) {
                       <button
                         key={sample.id}
                         onClick={() => handleSampleSelect(sample)}
-                        className="w-full px-4 py-3 text-left text-purple-100 hover:bg-pink-500/20 hover:text-white transition-all duration-200 font-poppins border-b border-pink-300/20 last:border-0"
+                        className="w-full px-3 sm:px-4 py-2 sm:py-3 text-left text-purple-100 hover:bg-pink-500/20 hover:text-white transition-all duration-200 font-poppins border-b border-pink-300/20 last:border-0 text-sm sm:text-base"
                       >
                         {sample.name}
                       </button>
@@ -214,8 +214,8 @@ export default function MainApp({ onBackToHome }: MainAppProps) {
               </div>
             </div>
 
-            <div className="mb-8">
-              <label className="block text-lg font-space-grotesk font-bold bg-gradient-to-r from-pink-200 to-purple-200 bg-clip-text text-transparent mb-4">
+            <div className="mb-6 sm:mb-8">
+              <label className="block text-base sm:text-lg font-space-grotesk font-bold bg-gradient-to-r from-pink-200 to-purple-200 bg-clip-text text-transparent mb-3 sm:mb-4">
                 Or Upload Your GIF
               </label>
               <div className="relative">
@@ -229,36 +229,36 @@ export default function MainApp({ onBackToHome }: MainAppProps) {
                 />
                 <label
                   htmlFor="file-upload"
-                  className="w-full bg-gradient-to-r from-pink-500/20 to-purple-500/20 border-2 border-pink-300/50 rounded-xl px-4 py-3 flex items-center gap-3 cursor-pointer hover:from-pink-500/30 hover:to-purple-500/30 hover:border-pink-300 transition-all duration-300 group"
+                  className="w-full bg-gradient-to-r from-pink-500/20 to-purple-500/20 border-2 border-pink-300/50 rounded-xl px-3 sm:px-4 py-2 sm:py-3 flex items-center gap-2 sm:gap-3 cursor-pointer hover:from-pink-500/30 hover:to-purple-500/30 hover:border-pink-300 transition-all duration-300 group text-xs sm:text-sm"
                 >
-                  <div className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-4 py-2 rounded-lg font-medium font-poppins flex items-center gap-2 group-hover:shadow-lg group-hover:shadow-pink-500/50 transition-all duration-300 transform group-hover:scale-105">
-                    <Upload className="w-4 h-4" />
+                  <div className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium font-poppins flex items-center gap-2 group-hover:shadow-lg group-hover:shadow-pink-500/50 transition-all duration-300 transform group-hover:scale-105 whitespace-nowrap">
+                    <Upload className="w-3 h-3 sm:w-4 sm:h-4" />
                     Choose File
                   </div>
-                  <span className="text-purple-100 font-poppins group-hover:text-white transition-colors">
+                  <span className="text-purple-100 font-poppins group-hover:text-white transition-colors truncate">
                     {uploadedFile?.name || 'No file chosen'}
                   </span>
                 </label>
               </div>
             </div>
 
-            <div className="flex justify-center">
+            <div className="flex justify-center pb-4">
               <button
                 onClick={handleGenerateCaption}
                 disabled={!previewUrl || loading}
-                className="relative group px-10 py-3 text-lg font-semibold text-white font-poppins overflow-hidden rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+                className="relative group px-8 sm:px-10 py-2.5 sm:py-3 text-base sm:text-lg font-semibold text-white font-poppins overflow-hidden rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 transition-all duration-300 group-hover:scale-110 group-disabled:scale-100"></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-600 via-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <span className="relative block transition-all duration-300 group-hover:scale-110 flex items-center gap-2 justify-center group-disabled:scale-100">
                   {loading ? (
                     <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
                       Generating...
                     </>
                   ) : (
                     <>
-                      <Sparkles className="w-5 h-5" />
+                      <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
                       Generate Caption
                     </>
                   )}
@@ -269,13 +269,13 @@ export default function MainApp({ onBackToHome }: MainAppProps) {
           </div>
         ) : (
           /* Results View */
-          <div className="space-y-8">
-            <div className="grid md:grid-cols-3 gap-8">
+          <div className="flex-1 space-y-6 sm:space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
               <div className="md:col-span-1">
-                <h2 className="text-xl font-space-grotesk font-bold bg-gradient-to-r from-pink-200 to-purple-200 bg-clip-text text-transparent mb-4">
+                <h2 className="text-lg sm:text-xl font-space-grotesk font-bold bg-gradient-to-r from-pink-200 to-purple-200 bg-clip-text text-transparent mb-4">
                   Uploaded GIF
                 </h2>
-                <div className="bg-gradient-to-br from-white/10 to-purple-500/10 rounded-2xl shadow-xl p-6 border border-pink-300/30 backdrop-blur-xl hover:border-pink-300/60 hover:shadow-2xl hover:shadow-pink-500/30 transition-all duration-500 group cursor-pointer transform hover:scale-105">
+                <div className="bg-gradient-to-br from-white/10 to-purple-500/10 rounded-2xl shadow-xl p-4 sm:p-6 border border-pink-300/30 backdrop-blur-xl hover:border-pink-300/60 hover:shadow-2xl hover:shadow-pink-500/30 transition-all duration-500 group cursor-pointer transform hover:scale-105">
                   <div className="aspect-square bg-gradient-to-br from-pink-400/20 to-purple-400/20 rounded-xl overflow-hidden border border-pink-300/30 group-hover:border-pink-300 transition-all duration-300">
                     <img
                       src={previewUrl}
@@ -286,22 +286,22 @@ export default function MainApp({ onBackToHome }: MainAppProps) {
                 </div>
               </div>
 
-              <div className="md:col-span-2 space-y-6">
+              <div className="md:col-span-2 space-y-4 sm:space-y-6">
                 {/* Content Warning Display - NEW */}
                 {contentWarning && (
-                  <div className="bg-yellow-500/20 border-2 border-yellow-500/50 rounded-2xl p-6 backdrop-blur-sm hover:border-yellow-500/70 transition-all duration-300 group">
-                    <div className="flex items-start gap-4">
+                  <div className="bg-yellow-500/20 border-2 border-yellow-500/50 rounded-2xl p-4 sm:p-6 backdrop-blur-sm hover:border-yellow-500/70 transition-all duration-300 group">
+                    <div className="flex items-start gap-3 sm:gap-4">
                       <div className="flex-shrink-0">
-                        <AlertTriangle className="w-8 h-8 text-yellow-300 group-hover:scale-110 transition-transform duration-300" />
+                        <AlertTriangle className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-300 group-hover:scale-110 transition-transform duration-300" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-yellow-100 font-bold font-space-grotesk text-lg mb-2">
+                        <h3 className="text-sm sm:text-lg font-bold font-space-grotesk text-yellow-100 mb-2">
                           Content Warning
                         </h3>
-                        <p className="text-yellow-200/90 text-sm font-poppins mb-3">
+                        <p className="text-yellow-200/90 text-xs sm:text-sm font-poppins mb-3">
                           {contentWarning}
                         </p>
-                        <div className="bg-yellow-400/10 border border-yellow-400/30 rounded-lg p-3">
+                        <div className="bg-yellow-400/10 border border-yellow-400/30 rounded-lg p-2 sm:p-3">
                           <p className="text-yellow-200/80 text-xs font-poppins">
                             💡 <strong>Tip:</strong> For best results, use real-world GIFs with:
                           </p>
@@ -322,38 +322,38 @@ export default function MainApp({ onBackToHome }: MainAppProps) {
                 )}
 
                 <div>
-                  <h2 className="text-xl font-space-grotesk font-bold bg-gradient-to-r from-pink-200 to-purple-200 bg-clip-text text-transparent mb-4">
+                  <h2 className="text-lg sm:text-xl font-space-grotesk font-bold bg-gradient-to-r from-pink-200 to-purple-200 bg-clip-text text-transparent mb-4">
                     Generated Caption
                   </h2>
-                  <div className="bg-gradient-to-br from-white/10 to-purple-500/10 rounded-2xl shadow-xl p-8 border border-pink-300/30 backdrop-blur-xl hover:from-white/15 hover:to-pink-500/15 hover:border-pink-300/60 transition-all duration-500 group">
-                    <div className="mb-4 inline-block">
-                      <span className="bg-gradient-to-r from-pink-500/50 to-purple-500/50 text-white px-4 py-2 rounded-full text-sm font-bold capitalize font-poppins border border-pink-300/50 group-hover:border-pink-300 group-hover:shadow-lg group-hover:shadow-pink-500/50 transition-all duration-300">
+                  <div className="bg-gradient-to-br from-white/10 to-purple-500/10 rounded-2xl shadow-xl p-4 sm:p-8 border border-pink-300/30 backdrop-blur-xl hover:from-white/15 hover:to-pink-500/15 hover:border-pink-300/60 transition-all duration-500 group">
+                    <div className="mb-4 inline-flex flex-wrap gap-2">
+                      <span className="bg-gradient-to-r from-pink-500/50 to-purple-500/50 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold capitalize font-poppins border border-pink-300/50 group-hover:border-pink-300 group-hover:shadow-lg group-hover:shadow-pink-500/50 transition-all duration-300">
                         {emotion.replace('_', ' ')}
                       </span>
                       {confidence > 0 && (
-                        <span className="ml-3 text-purple-200/70 text-sm font-poppins">
+                        <span className="text-purple-200/70 text-xs sm:text-sm font-poppins py-1.5 sm:py-2">
                           {(confidence * 100).toFixed(1)}% confident
                         </span>
                       )}
                     </div>
-                    <p className="text-purple-50 text-lg leading-relaxed mb-6 font-poppins group-hover:text-white transition-colors duration-300">
+                    <p className="text-purple-50 text-base sm:text-lg leading-relaxed mb-4 sm:mb-6 font-poppins group-hover:text-white transition-colors duration-300">
                       "{caption}"
                     </p>
 
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                       <button
                         onClick={handleRegenerate}
                         disabled={loading}
-                        className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500/30 to-purple-500/30 border border-pink-300/50 hover:from-pink-500/50 hover:to-purple-500/50 hover:border-pink-300 text-white font-semibold font-poppins rounded-xl transition-all duration-300 disabled:opacity-50 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/30"
+                        className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-pink-500/30 to-purple-500/30 border border-pink-300/50 hover:from-pink-500/50 hover:to-purple-500/50 hover:border-pink-300 text-white font-semibold font-poppins rounded-xl transition-all duration-300 disabled:opacity-50 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/30 text-sm sm:text-base"
                       >
-                        <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+                        <RefreshCw className={`w-3 h-3 sm:w-4 sm:h-4 ${loading ? 'animate-spin' : ''}`} />
                         Regenerate
                       </button>
                       <button
                         onClick={handleCopy}
-                        className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500/30 to-purple-500/30 border border-pink-300/50 hover:from-pink-500/50 hover:to-purple-500/50 hover:border-pink-300 text-white font-semibold font-poppins rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/30"
+                        className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-pink-500/30 to-purple-500/30 border border-pink-300/50 hover:from-pink-500/50 hover:to-purple-500/50 hover:border-pink-300 text-white font-semibold font-poppins rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/30 text-sm sm:text-base"
                       >
-                        <Copy className="w-4 h-4" />
+                        <Copy className="w-3 h-3 sm:w-4 sm:h-4" />
                         {copiedText ? 'Copied!' : 'Copy'}
                       </button>
                     </div>
@@ -361,11 +361,11 @@ export default function MainApp({ onBackToHome }: MainAppProps) {
                 </div>
 
                 <div>
-                  <div className="bg-gradient-to-br from-white/10 to-purple-500/10 rounded-2xl shadow-xl p-8 border border-pink-300/30 backdrop-blur-xl hover:from-white/15 hover:to-pink-500/15 hover:border-pink-300/60 transition-all duration-500 group">
-                    <h3 className="text-lg font-space-grotesk font-bold bg-gradient-to-r from-pink-200 to-purple-200 bg-clip-text text-transparent mb-4 group-hover:from-pink-100 group-hover:to-purple-100 transition-all duration-300">
+                  <div className="bg-gradient-to-br from-white/10 to-purple-500/10 rounded-2xl shadow-xl p-4 sm:p-8 border border-pink-300/30 backdrop-blur-xl hover:from-white/15 hover:to-pink-500/15 hover:border-pink-300/60 transition-all duration-500 group">
+                    <h3 className="text-base sm:text-lg font-space-grotesk font-bold bg-gradient-to-r from-pink-200 to-purple-200 bg-clip-text text-transparent mb-4 group-hover:from-pink-100 group-hover:to-purple-100 transition-all duration-300">
                       How well does this caption match the emotion of your GIF?
                     </h3>
-                    <div className="flex gap-3 justify-center">
+                    <div className="flex gap-2 sm:gap-3 justify-center">
                       {[1, 2, 3, 4, 5].map((value) => (
                         <button
                           key={value}
@@ -375,7 +375,7 @@ export default function MainApp({ onBackToHome }: MainAppProps) {
                           className="transition-all duration-300 transform hover:scale-150 hover:-translate-y-2"
                         >
                           <Star
-                            className={`w-12 h-12 transition-all duration-200 ${
+                            className={`w-8 h-8 sm:w-12 sm:h-12 transition-all duration-200 ${
                               value <= (hoveredStar || rating)
                                 ? 'fill-yellow-300 text-yellow-300 drop-shadow-lg drop-shadow-yellow-500'
                                 : 'text-pink-300/50 hover:text-pink-300'
@@ -389,10 +389,10 @@ export default function MainApp({ onBackToHome }: MainAppProps) {
               </div>
             </div>
 
-            <div className="flex justify-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pb-4">
               <button
                 onClick={handleUploadAnother}
-                className="relative group px-8 py-3 text-lg font-semibold text-white font-poppins overflow-hidden rounded-full"
+                className="relative group px-6 sm:px-8 py-2.5 sm:py-3 text-base sm:text-lg font-semibold text-white font-poppins overflow-hidden rounded-full order-2 sm:order-1"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500 transition-all duration-300 group-hover:scale-110"></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-600 via-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -403,12 +403,12 @@ export default function MainApp({ onBackToHome }: MainAppProps) {
               </button>
               <button
                 onClick={onBackToHome}
-                className="relative group px-8 py-3 text-lg font-semibold text-white font-poppins overflow-hidden rounded-full"
+                className="relative group px-6 sm:px-8 py-2.5 sm:py-3 text-base sm:text-lg font-semibold text-white font-poppins overflow-hidden rounded-full order-1 sm:order-2"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 transition-all duration-300 group-hover:scale-110"></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <span className="relative block transition-all duration-300 group-hover:scale-110 flex items-center gap-2 justify-center">
-                  <Home className="w-5 h-5" />
+                  <Home className="w-4 h-4 sm:w-5 sm:h-5" />
                   Back to Home
                 </span>
                 <div className="absolute inset-0 rounded-full shadow-lg shadow-purple-500/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

@@ -5,12 +5,34 @@
 @tailwind utilities;
 
 @layer base {
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-space-grotesk;
+  /* Reset and normalize */
+  html, body, #root {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
     @apply font-poppins;
+    overflow-x: hidden;
+    background: linear-gradient(to bottom right, rgb(88, 28, 135), rgb(157, 23, 77), rgb(88, 28, 135));
+    min-height: 100vh;
+  }
+
+  #root {
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-space-grotesk;
   }
 }
 

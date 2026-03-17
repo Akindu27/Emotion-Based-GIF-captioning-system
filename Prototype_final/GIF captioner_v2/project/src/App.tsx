@@ -6,13 +6,13 @@ function App() {
   const [currentPage, setCurrentPage] = useState<'landing' | 'app'>('landing');
 
   return (
-    <>
+    <div className="w-full min-h-screen flex flex-col">
       {currentPage === 'landing' ? (
         <LandingPage onGetStarted={() => setCurrentPage('app')} />
       ) : (
         <MainApp onBackToHome={() => setCurrentPage('landing')} />
       )}
-    </>
+    </div>
   );
 }
 
