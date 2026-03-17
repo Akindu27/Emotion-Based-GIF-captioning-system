@@ -17,13 +17,12 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   body {
     @apply font-poppins;
     overflow-x: hidden;
-    background: linear-gradient(to bottom right, rgb(88, 28, 135), rgb(157, 23, 77), rgb(88, 28, 135));
-    min-height: 100vh;
   }
 
   #root {

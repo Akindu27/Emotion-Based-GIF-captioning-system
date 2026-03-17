@@ -147,15 +147,15 @@ export default function MainApp({ onBackToHome }: MainAppProps) {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-purple-900 overflow-hidden flex flex-col">
+    <div className="w-full min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-purple-900 flex flex-col">
       {/* Background Decor */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
+      <div className="fixed inset-0 opacity-20 pointer-events-none">
         <div className="absolute top-40 left-20 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
         <div className="absolute top-60 right-20 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-700"></div>
         <div className="absolute -bottom-20 left-1/2 w-96 h-96 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000"></div>
       </div>
 
-      <div className="relative z-10 flex-1 flex flex-col max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 overflow-y-auto">
+      <div className="relative z-10 flex-1 flex flex-col max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-space-grotesk font-bold bg-gradient-to-r from-pink-200 via-purple-200 to-pink-200 bg-clip-text text-transparent mb-3 sm:mb-4 tracking-tight">

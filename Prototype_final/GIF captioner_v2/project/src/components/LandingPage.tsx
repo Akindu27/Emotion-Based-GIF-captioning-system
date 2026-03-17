@@ -6,14 +6,14 @@ interface LandingPageProps {
 
 export default function LandingPage({ onGetStarted }: LandingPageProps) {
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-purple-900 overflow-hidden flex flex-col">
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
+    <div className="w-full min-h-screen bg-gradient-to-br from-purple-900 via-pink-800 to-purple-900 flex flex-col">
+      <div className="fixed inset-0 opacity-30 pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
         <div className="absolute top-40 right-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-700"></div>
         <div className="absolute -bottom-20 left-1/2 w-72 h-72 bg-pink-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000"></div>
       </div>
 
-      <div className="relative z-10 flex-1 flex flex-col max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-16 overflow-y-auto">
+      <div className="relative z-10 flex-1 flex flex-col max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-16">
         <div className="text-center mb-8 sm:mb-16">
           <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-6 flex-wrap">
             <Film className="w-6 h-6 sm:w-8 sm:h-8 text-pink-300 animate-spin flex-shrink-0" />
