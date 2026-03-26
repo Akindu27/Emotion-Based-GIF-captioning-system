@@ -26,9 +26,7 @@ export async function generateCaption(fileOrUrl: File | string): Promise<Caption
   }
 
   // 2. Send to your LOCAL FastAPI backend
-
-  //const response = await fetch(`${API_URL}/generate`, {
-  const response = await fetch(`${API_URL}/generate?mode=enhanced`, {
+  const response = await fetch(`${API_URL}/generate`, {
     method: 'POST',
     body: formData,
   });

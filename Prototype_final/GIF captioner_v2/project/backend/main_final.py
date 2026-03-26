@@ -734,7 +734,7 @@ if __name__ == "__main__":
     logger.info(f"Device: {device}")
     logger.info(f"Emotion Groups: {len(EMOTION_GROUPS)} - {', '.join(EMOTION_GROUPS)}")
     logger.info(f"Action Detection: {'Enabled ✓' if ACTION_DETECTION_ENABLED else 'Disabled ✗'}")
-    logger.info(f"API Docs: http://0.0.0.0:7860/docs")
+    logger.info(f"API Docs: http://127.0.0.1:8000/docs")
     logger.info("=" * 70)
 
-    uvicorn.run(app, host="0.0.0.0", port=7860)
+    uvicorn.run(app, host="127.0.0.1", port=8000)
