@@ -20,8 +20,8 @@ COPY . /app
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# expose default huggingface port 7860
-EXPOSE 7860
+# expose port 8000
+EXPOSE 8000
 
-# run uvicorn with the app object
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
+# run uvicorn with the main app
+CMD ["uvicorn", "main_final:app", "--host", "0.0.0.0", "--port", "8000"]

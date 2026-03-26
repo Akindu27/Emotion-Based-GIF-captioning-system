@@ -1,6 +1,0 @@
-for backend go to the backend folder and run python main.py (make sure the venv is running)
-    cd "Prototype_final\GIF captioner_v2\project\backend"
-    python main_final.py
-
-for front end go to project folder and run npm run dev
-    cd "Prototype_final\GIF captioner_v2\project"
