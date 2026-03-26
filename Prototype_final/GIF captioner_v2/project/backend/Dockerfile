@@ -23,5 +23,5 @@ RUN pip install -r requirements.txt
 # expose port 8000
 EXPOSE 8000
 
-# run uvicorn with the main app
-CMD ["uvicorn", "main_final:app", "--host", "0.0.0.0", "--port", "8000"]
+# run uvicorn with app wrapper (compatible with HF Spaces)
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
