@@ -5,7 +5,6 @@
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-latest-009485.svg)](https://fastapi.tiangolo.com/)
 [![React + TypeScript](https://img.shields.io/badge/React-TypeScript-61DAFB.svg)](https://react.dev/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 An intelligent system that analyzes GIFs to detect emotions, objects, actions, and generates contextually-aware natural language captions.
 
