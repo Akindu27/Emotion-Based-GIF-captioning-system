@@ -47,7 +47,6 @@ Upload a GIF, and SentiVue generates rich, emotionally-aware captions like:
 - Automatic API documentation (Swagger UI)
 - CORS enabled for cross-domain requests
 - Error handling and validation
-- Health check endpoints
 - Detailed metadata in responses
 
 ### Frontend Features
@@ -60,35 +59,6 @@ Upload a GIF, and SentiVue generates rich, emotionally-aware captions like:
 - Dark theme with gradient design
 
 ---
-
-## Architecture
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                                                          │
-│              Vercel Frontend (React)                    │
-│         (sentivue.vercel.app)                           │
-│                                                          │
-└──────────────────────┬──────────────────────────────────┘
-                       │ HTTP REST API
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│                                                          │
-│         HuggingFace Spaces Backend (FastAPI)            │
-│   (Akindu27-sentivue-backend.hf.space)                  │
-│                                                          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │  Emotion Model (ResNet50)                        │  │
-│  │  Object Detector (YOLO v8n)                      │  │
-│  │  Action Recognizer (VideoMAE)                    │  │
-│  │  Analysis Pipeline (OpenCV, NumPy)              │  │
-│  │  Caption Generator (Template Engine)             │  │
-│  └──────────────────────────────────────────────────┘  │
-│                                                          │
-│  Models from: Akindu27/sentivue-models (HF Hub)        │
-│                                                          │
-└─────────────────────────────────────────────────────────┘
-```
 
 ### Tech Stack
 
@@ -104,7 +74,7 @@ Upload a GIF, and SentiVue generates rich, emotionally-aware captions like:
 
 **Frontend:**
 
-- React 18+
+- React
 - TypeScript
 - Tailwind CSS (Styling)
 - Vite (Build tool)
@@ -276,37 +246,6 @@ Returns API information and available features.
 
 ## Development
 
-### Project Structure
-
-```
-Prototype_final/GIF captioner_v2/project/
-├── backend/
-│   ├── main_final.py          # Production backend
-│   ├── app.py                 # ASGI entry point
-│   ├── requirements.txt        # Python dependencies
-│   ├── Dockerfile             # Docker build config
-│   ├── .env                   # Environment variables
-│   └── models/                # Downloaded model cache
-│
-├── src/
-│   ├── components/
-│   │   ├── MainApp.tsx        # Main application component
-│   │   └── LandingPage.tsx    # Landing page
-│   ├── services/
-│   │   └── captionService.ts  # API communication
-│   ├── App.tsx                # Root component
-│   ├── index.css              # Global styles
-│   └── main.tsx               # Entry point
-│
-├── .env.local                 # Local dev config
-├── .env.production            # Production config
-├── package.json               # Node dependencies
-├── tsconfig.json              # TypeScript config
-├── tailwind.config.js         # Tailwind CSS config
-├── vite.config.ts             # Vite config
-└── vercel.json                # Vercel deployment config
-```
-
 ### Running Tests
 
 ```bash
@@ -430,35 +369,9 @@ git push origin feature/your-feature
 
 ---
 
-## License
-
-This project is licensed under the MIT License - see [LICENSE](../../LICENSE) file for details.
-
----
-
 ## Author
 
 Akindu27 - [GitHub](https://github.com/Akindu27) | [HuggingFace Hub](https://huggingface.co/Akindu27)
-
----
-
-## Acknowledgments
-
-- GIFGIF dataset for emotion labels
-- YOLO community for object detection models
-- VideoMAE team for action recognition
-- FastAPI for excellent API framework
-- Hugging Face for model hosting
-
----
-
-## References
-
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [PyTorch Documentation](https://pytorch.org/docs/)
-- [React Documentation](https://react.dev/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [YOLO Documentation](https://docs.ultralytics.com/)
 
 ---
 
