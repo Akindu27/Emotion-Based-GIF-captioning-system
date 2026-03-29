@@ -9,8 +9,6 @@
 
 An intelligent system that analyzes GIFs to detect emotions, objects, actions, and generates contextually-aware natural language captions.
 
-[Live Demo](https://sentivue.vercel.app) | [Documentation](#features) | [Installation](#installation) | [Development](#development)
-
 </div>
 
 ---
@@ -38,11 +36,10 @@ Upload a GIF, and SentiVue generates rich, emotionally-aware captions like:
 | Feature                | Technology     | Details                                                                                                     |
 | ---------------------- | -------------- | ----------------------------------------------------------------------------------------------------------- |
 | Emotion Detection      | ResNet50       | 6 emotion groups: positive_energetic, positive_calm, negative_intense, negative_subdued, surprise, contempt |
-| Object Detection       | YOLO v8 Nano   | Multi-frame voting ensures accurate detection across animation frames                                       |
+| Object Detection       | YOLO v8        | Multi-frame voting ensures accurate detection across animation frames                                       |
 | Action Recognition     | VideoMAE       | Detects activities (dancing, jumping, etc.) with motion-based fallback                                      |
 | Person Counting        | YOLO           | Counts people in the GIF with confidence thresholds                                                         |
 | Lighting Analysis      | OpenCV         | Classifies brightness as dim, moderate, or bright                                                           |
-| Content Classification | Heuristics     | Detects real-world vs animated/cartoon content                                                              |
 | Caption Generation     | Template-based | Context-aware English descriptions with emotion-specific vocabulary                                         |
 
 ### API Features
