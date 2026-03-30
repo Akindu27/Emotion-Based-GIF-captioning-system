@@ -1,9 +1,0 @@
-[
-  {
-    "gif_id": "L29fiOMSDhhvi",
-    "true_emotion": "contempt",
-    "pred_emotion": "negative_intense",
-    "confidence": 0.7874032855033875,
-    "template_caption": "a panicked person fleeing",
-    "gpt_caption": "a furious person trembling",
-    "vgg_features_mean": 
