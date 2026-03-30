@@ -8,9 +8,9 @@ print("=" * 60)
 print("GIFGIF Dataset Overview")
 print("=" * 60)
 
-print(f"\n📊 Total comparisons: {len(df):,}")
-print(f"📁 File size: 114.63 MB")
-print(f"📋 Columns: {df.columns.tolist()}")
+print(f"\nTotal comparisons: {len(df):,}")
+print(f"File size: 114.63 MB")
+print(f"Columns: {df.columns.tolist()}")
 
 print("\n" + "=" * 60)
 print("Emotion Distribution")

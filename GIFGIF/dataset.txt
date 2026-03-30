@@ -1,0 +1,3 @@
+Used Lucas Maystre GIFGIF dataset can be found in official page:
+
+https://lucas.maystre.ch/gifgif-data

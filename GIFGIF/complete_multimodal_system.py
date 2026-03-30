@@ -30,21 +30,21 @@ import cv2
 try:
     from groq import Groq
 except ImportError:
-    print("⚠️  Install: pip install groq")
+    print("Install: pip install groq")
     sys.exit(1)
 
 # Ultralytics YOLO
 try:
     from ultralytics import YOLO
 except ImportError:
-    print("⚠️  Install: pip install ultralytics")
+    print("Install: pip install ultralytics")
     sys.exit(1)
 
 # Transformers for VideoMAE
 try:
     from transformers import VideoMAEImageProcessor, VideoMAEForVideoClassification
 except ImportError:
-    print("⚠️  Install: pip install transformers")
+    print("Install: pip install transformers")
     sys.exit(1)
 
 # ============================================================================
@@ -70,12 +70,12 @@ def setup_groq():
     """Setup Groq API"""
     api_key = os.getenv('GROQ_API_KEY')
     if not api_key:
-        print("\n⚠️  GROQ_API_KEY not found!")
+        print("\nGROQ_API_KEY not found!")
         print("Set: $env:GROQ_API_KEY='gsk_...'")
         sys.exit(1)
     
     client = Groq(api_key=api_key)
-    print("✅ Groq API configured!")
+    print("Groq API configured!")
     return client
 
 # ============================================================================
@@ -115,7 +115,7 @@ class VideoMAEActionDetector:
     
     def __init__(self, device):
         self.device = device
-        print("📦 Loading VideoMAE for action detection...")
+        print("Loading VideoMAE for action detection...")
         
         # Use smaller model for CPU
         model_name = "MCG-NJU/videomae-base-finetuned-kinetics"
@@ -127,7 +127,7 @@ class VideoMAEActionDetector:
             self.model.eval()
             print("✅ VideoMAE loaded!")
         except Exception as e:
-            print(f"⚠️  VideoMAE loading failed: {e}")
+            print(f"VideoMAE loading failed: {e}")
             print("   Using fallback mode (no action detection)")
             self.model = None
     
@@ -171,7 +171,7 @@ class VideoMAEActionDetector:
             return action_simple, confidence
             
         except Exception as e:
-            print(f"   ⚠️  Action detection error: {e}")
+            print(f"Action detection error: {e}")
             return "unknown action", 0.0
     
     def _simplify_action(self, kinetics_label: str) -> str:
@@ -224,12 +224,12 @@ class YOLOObjectDetector:
     """
     
     def __init__(self):
-        print("📦 Loading YOLO for object detection...")
+        print("Loading YOLO for object detection...")
         try:
             self.model = YOLO('yolov8n.pt')  # Nano model (fastest)
             print("✅ YOLO loaded!")
         except Exception as e:
-            print(f"⚠️  YOLO loading failed: {e}")
+            print(f"YOLO loading failed: {e}")
             self.model = None
     
     def detect_objects(self, frame: Image.Image) -> List[Tuple[str, float]]:
@@ -263,7 +263,7 @@ class YOLOObjectDetector:
             return objects[:5]  # Top 5 objects
             
         except Exception as e:
-            print(f"   ⚠️  Object detection error: {e}")
+            print(f"Object detection error: {e}")
             return []
 
 # ============================================================================
@@ -455,7 +455,7 @@ Generate ONLY the caption (no quotes, no explanation):"""
         return caption
         
     except Exception as e:
-        print(f"   ⚠️  Groq error: {e}")
+        print(f"Groq error: {e}")
         return f"a {random.choice(emotion_words)} person {action}"
 
 # ============================================================================
@@ -487,7 +487,7 @@ def extract_all_frames(gif_path: Path) -> Tuple[List[Image.Image], Image.Image]:
         return frames, middle_frame
         
     except Exception as e:
-        print(f"   ⚠️  Error: {e}")
+        print(f"Error: {e}")
         return [], None
 
 # ============================================================================
@@ -496,7 +496,7 @@ def extract_all_frames(gif_path: Path) -> Tuple[List[Image.Image], Image.Image]:
 
 def main():
     print("="*70)
-    print("🎨 COMPLETE MULTI-MODAL CAPTION GENERATION")
+    print("COMPLETE MULTI-MODAL CAPTION GENERATION")
     print("="*70)
     print("Pipeline: ResNet50 + VideoMAE + YOLO + VGG16 + Groq")
     print(f"Output: {OUTPUT_DIR}")
@@ -505,7 +505,7 @@ def main():
     # Setup all models
     groq_client = setup_groq()
     
-    print("\n📦 Loading emotion model...")
+    print("\nLoading emotion model...")
     emotion_model = GroupedEmotionClassifier(num_classes=6)
     emotion_model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
     emotion_model = emotion_model.to(device)
@@ -565,20 +565,20 @@ def main():
             emotion_conf = probs[pred_idx].item()
             pred_emotion = idx_to_emotion[pred_idx]
         
-        print(f"   😊 Emotion: {pred_emotion} ({emotion_conf*100:.1f}%)")
+        print(f"Emotion: {pred_emotion} ({emotion_conf*100:.1f}%)")
         
         # 2. ACTION (VideoMAE)
         action, action_conf = videomae.detect_action(all_frames)
-        print(f"   🏃 Action: {action} ({action_conf*100:.1f}%)")
+        print(f"Action: {action} ({action_conf*100:.1f}%)")
         
         # 3. OBJECTS (YOLO)
         objects = yolo.detect_objects(middle_frame)
         objects_str = ", ".join([f"{obj}({conf:.0%})" for obj, conf in objects[:3]]) if objects else "none"
-        print(f"   🎯 Objects: {objects_str}")
+        print(f"Objects: {objects_str}")
         
         # 4. SCENE (VGG16)
         scene = vgg16.analyze_scene(frame_tensor, middle_frame)
-        print(f"   🎬 Scene: {scene['content_type']}, {scene['setting']}, {scene['lighting']}")
+        print(f" Scene: {scene['content_type']}, {scene['setting']}, {scene['lighting']}")
         
         # 5. GENERATE CAPTIONS
         template = generate_template_caption(pred_emotion)
@@ -587,8 +587,8 @@ def main():
             action, action_conf, objects, scene
         )
         
-        print(f"   📝 Template: '{template}'")
-        print(f"   🎨 Multi-modal: '{multimodal}'")
+        print(f"Template: '{template}'")
+        print(f"Multi-modal: '{multimodal}'")
         
         results.append({
             'gif_id': gif_id,
@@ -618,7 +618,7 @@ def main():
     generate_html_report(results, OUTPUT_DIR / 'multimodal_comparison.html', GIF_DIR)
     
     print(f"\n✅ COMPLETE!")
-    print(f"📊 Open: {OUTPUT_DIR / 'multimodal_comparison.html'}")
+    print(f"Open: {OUTPUT_DIR / 'multimodal_comparison.html'}")
 
 # ============================================================================
 # HTML REPORT
@@ -700,12 +700,12 @@ def generate_html_report(results: List[Dict], output_path: Path, gif_dir: Path):
             </div>
             
             <div class="caption template">
-                <strong>📝 Template (Baseline):</strong><br>
+                <strong>Template (Baseline):</strong><br>
                 "{r['template_caption']}"
             </div>
             
             <div class="caption multimodal">
-                <strong>🎨 Multi-Modal (ResNet50 + VideoMAE + YOLO + VGG16):</strong><br>
+                <strong>Multi-Modal (ResNet50 + VideoMAE + YOLO + VGG16):</strong><br>
                 "{r['multimodal_caption']}"
             </div>
         </div>
@@ -720,7 +720,7 @@ def generate_html_report(results: List[Dict], output_path: Path, gif_dir: Path):
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write(html)
     
-    print(f"📄 HTML: {output_path}")
+    print(f"HTML: {output_path}")
 
 if __name__ == "__main__":
     main()

@@ -42,7 +42,7 @@ NEXT STEPS
    DATA_DIR = 'D:\IIT\Year 4\FYP\Datasets\GIFGIF_lucas\Research_test\csvs'
    GIF_DIR = 'D:\IIT\Year 4\FYP\Datasets\GIFGIF_lucas\Data\gifgif-images-v1\gifgif-images'
 
-2. Run your first experiment:
+2. Run first experiment:
    python train_ablation.py \
        --experiment exp3_6groups \
        --gif_dir 'D:\IIT\Year 4\FYP\Datasets\GIFGIF_lucas\Data\gifgif-images-v1\gifgif-images' \

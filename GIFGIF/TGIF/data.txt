@@ -1,0 +1,2 @@
+You can download the official TGIF dataset from this link:
+https://www.kaggle.com/datasets/raingo/tumblr-gif-description-dataset?select=tgif-v1.0.tsv
