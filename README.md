@@ -1,10 +1,6 @@
-# SentiVue - Emotion-Based GIF Captioning System
+# Sentivue - Emotion-Based GIF Captioning System
 
 <div align="center">
-
-[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue)](https://www.python.org/downloads/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-latest-009485.svg)](https://fastapi.tiangolo.com/)
-[![React + TypeScript](https://img.shields.io/badge/React-TypeScript-61DAFB.svg)](https://react.dev/)
 
 An intelligent system that analyzes GIFs to detect emotions, objects, actions, and generates contextually-aware natural language captions.
 
@@ -287,7 +283,7 @@ Deployed at: https://Akindu27-sentivue-backend.hf.space
 3. Configure environment variable: `VITE_API_URL=https://Akindu27-sentivue-backend.hf.space`
 4. Vercel auto-deploys on main branch push
 
-Deployed at: https://sentivue.vercel.app
+Deployed at: https://sentivue-olive.vercel.app/
 
 ---
 
