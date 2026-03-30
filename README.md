@@ -98,6 +98,18 @@ cd Prototype_final/GIF\ captioner_v2/project/backend
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
+# Download Models
+Before proceeding with installation, you need to download the pre-trained models:
+
+1. Download the models from this [Google Drive link](https://drive.google.com/drive/folders/1cQ8Yaxt1MhlZDCsMcELU3IoT5QeYbEWr?usp=sharing)
+
+2. Extract and place them in the `models` directory:
+```
+Emotion-Based-GIF-captioning-system/Prototype_final/GIF captioner_v2/project/backend/models
+```
+
+3. The models directory should contain all downloaded model files.
+
 # Install dependencies
 pip install -r requirements.txt
 
